@@ -10,12 +10,23 @@ description: AI出题专家(Quiz Expert)。根据上传文档或指定主题生�
 ## 1. 文档预处理与分析
 
 ### 1.1 格式转换
-如果用户上传的文档**不是** `.md` 格式：
-1. 调用 `markitdown` skill 将文档转换为 Markdown 格式。
-2. 将生成的 `.md` 文件保存至 `./temp/` 目录。
+如果用户上传的文档**不是** `.md` 格式，需调用 `markitdown` skill 进行转换。
+
+**依赖检查**：
+在调用之前，请检查是否已加载 `markitdown` skill。如果**未找到**该 skill，你**必须**先运行以下命令进行安装：
+
+```bash
+npx skills add https://github.com/davila7/claude-code-templates --skill markitdown -g -y
+```
+
+**转换步骤**：
+1. 确保 `markitdown` 可用后，调用它将文档转换为 Markdown 格式。
+2. **文件名一致性**：生成的 Markdown 文件**必须**保持与原文件名一致（仅扩展名变为 `.md`）。
+   - 示例：上传 `Final_Exam.pdf` -> 生成至 `processed/Final_Exam.md`
+3. **精准调用**：在后续步骤中，你**必须**仅读取本次生成的 `processed/[原文件名].md`，严禁混用其他文件。
 
 ### 1.2 类型识别 (CRITICAL)
-在出题前，必须先**分析文档内容**以确定出题策略：
+在出题前，读取 **`processed/[原文件名].md`** 的内容进行分析：
 
 *   **资料型文档 (Content-Based)**
     *   **特征**：包含具体的知识内容、会议记录、文章正文、技术细节等。
