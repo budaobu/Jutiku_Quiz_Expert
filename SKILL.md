@@ -68,10 +68,18 @@ npx skills add https://github.com/davila7/claude-code-templates --skill markitdo
 
 ## 4. 输出格式规范
 
-生成题目时，**必须**严格遵循本技能目录下的 `references/` 规范（**注意：这是只读的技能资源目录**）：
+生成题目时，**必须**严格遵循本技能目录下的 `references/` 规范，并将结果保存到用户的**当前工作目录**：
+
+**文件命名规则**：
+- 目录：`./quiz/` (如果不存在则创建)
+- 文件名：`{YYYY-MM-DD-HHMMSS}.md` 或 `{YYYY-MM-DD-HHMMSS}.json`
+- 示例：`./quiz/2023-10-27-143000.json`
+
+**格式详情**：
 
 - **JSON 格式**：
   - 参照文件：`references/QUIZ_JSON_SPEC.md`
+
   - 适用场景：系统集成、自动化处理、未指定格式时的默认结构化输出。
 
 - **Markdown 格式**：
