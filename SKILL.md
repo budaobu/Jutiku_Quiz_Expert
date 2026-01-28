@@ -22,11 +22,14 @@ npx skills add https://github.com/davila7/claude-code-templates --skill markitdo
 **转换步骤**：
 1. 确保 `markitdown` 可用后，调用它将文档转换为 Markdown 格式。
 2. **文件名一致性**：生成的 Markdown 文件**必须**保持与原文件名一致（仅扩展名变为 `.md`）。
-   - 示例：上传 `Final_Exam.pdf` -> 生成至 `processed/Final_Exam.md`
-3. **精准调用**：在后续步骤中，你**必须**仅读取本次生成的 `processed/[原文件名].md`，严禁混用其他文件。
+   - 示例：上传 `Final_Exam.pdf` -> 生成至 `./temp/Final_Exam.md`
+   - **路径重要说明**：
+     - 此 `./temp/` 目录**必须**建立在**用户当前的工作目录**（Current Working Directory）下，**严禁**写入 Skill 安装目录。
+     - 目的：方便用户直接查看和管理中间文件。
+3. **精准调用**：在后续步骤中，你**必须**仅读取本次生成的 `./temp/[原文件名].md`。
 
 ### 1.2 类型识别 (CRITICAL)
-在出题前，读取 **`processed/[原文件名].md`** 的内容进行分析：
+在出题前，读取工作目录下的 **`./temp/[原文件名].md`** 的内容进行分析：
 
 *   **资料型文档 (Content-Based)**
     *   **特征**：包含具体的知识内容、会议记录、文章正文、技术细节等。
@@ -65,7 +68,7 @@ npx skills add https://github.com/davila7/claude-code-templates --skill markitdo
 
 ## 4. 输出格式规范
 
-生成题目时，**必须**严格遵循 `references/` 目录下的格式规范：
+生成题目时，**必须**严格遵循本技能目录下的 `references/` 规范（**注意：这是只读的技能资源目录**）：
 
 - **JSON 格式**：
   - 参照文件：`references/QUIZ_JSON_SPEC.md`
