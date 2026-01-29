@@ -1,6 +1,13 @@
 ---
 name: Jutiku_Quiz_Expert
 description: AI出题专家(Quiz Expert)。根据上传文档或指定主题生成高质量题目。自动识别文档类型并采用混合出题策略。支持JSON/Markdown格式输出。
+keywords:
+  - quiz
+  - exam
+  - education
+  - test-generation
+  - markdown
+  - json
 ---
 
 # AI 出题专家系统
@@ -23,8 +30,8 @@ description: AI出题专家(Quiz Expert)。根据上传文档或指定主题生�
 **目标**：获取文档的可处理内容，对用户透明。
 
 **执行流程**：
-1.  **优先策略**：如果文档不是 `.md` 格式，尝试调用 `markitdown-skill` 转换为 Markdown。
-    *   检查工具可用性，未找到则尝试安装：`npx skills add https://github.com/julianobarbosa/claude-code-skills --skill markitdown-skill -g -y`
+1.  **优先策略**：如果文档不是 `.md` 格式，尝试调用 `markitdown` 转换为 Markdown。
+    *   检查工具可用性，未找到则尝试安装：`npx skills add https://github.com/davila7/claude-code-templates --skill markitdown -g -y`
     *   转换成功后，保存至 `./temp/[原文件名].md`。
     *   **立即验证**：执行 `ls ./temp/` 确认文件已生成。
 
