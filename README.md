@@ -16,8 +16,11 @@ Jutiku Quiz Expert 是一个专为从文档生成结构化试题而设计的智�
 
 ### 前置要求
 确保您的环境中已安装：
-- Node.js & npm
-- `markitdown` (本技能会在运行时检查并尝试安装必要的转换工具)
+- **Python 3.8+ & pip**
+  - *Windows*: `winget install Python.Python.3`
+  - *macOS*: `brew install python`
+  - *Linux*: `sudo apt install python3 python3-pip`
+- `markitdown` (本技能会在运行时检查并尝试安装必要的转换工具: `pip install markitdown`)
 
 ### 使用方法
 

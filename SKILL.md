@@ -16,15 +16,20 @@ author: budaobu
     - 如果用户提供的是模糊名称，请查找最匹配的文件。
 2.  **格式转换**：
     - 如果文件**不是** `.md` 格式（例如 .doc, .docx, .pdf）：
-        - **环境检查**：检查是否已安装 `node` 和 `npm`。如果未安装，请根据操作系统执行以下步骤：
-            - **Windows**: 以管理员身份运行 PowerShell 并执行: `scripts/install_node_win.ps1`
-            - **macOS**: 在终端执行: `bash scripts/install_node_mac.sh`
-            - **Linux**: 在终端执行: `bash scripts/install_node_linux.sh`
+        - **环境检查**：检查是否已安装 `python` (或 `python3`) 和 `pip`。
+            - **如果未安装 Python**：
+                - 请告知用户需要安装 Python 3.8+。
+                - **Windows**: `winget install Python.Python.3` 或访问 python.org
+                - **macOS**: `brew install python`
+                - **Linux**: `sudo apt install python3 python3-pip`
         - **工具检查与安装**：
-            - 检查是否已安装 `markitdown`。
-            - 如果未安装，运行：`npx skills add https://github.com/davila7/claude-code-templates --skill markitdown -g -y`
-        - **转换**：使用 `markitdown` 将文件转换为 Markdown 格式。
-        - **保存**：将转换后的文件保存为 `{工作目录}/temp/{同文件名}.md`。
+            - 运行 `markitdown --version` 检查是否已安装。
+            - 如果未安装，运行：`pip install markitdown`
+            - 检查 `{工作目录}/temp/` 目录是否存在。如果不存在，务必创建它：`mkdir -p temp`。
+        - **转换**：
+            - 使用 `markitdown` 命令行工具将文件转换为 Markdown 格式。
+            - **命令格式**：`markitdown "{源文件名}" > "temp/{同文件名}.md"`
+            - 注意：请使用双引号包裹文件名以处理空格。
     - 如果已经是 `.md` 文件，则直接进行下一步。
 
 ### 2. 内容预处理与分析
@@ -95,7 +100,7 @@ author: budaobu
 > "根据 `2023年度报告.pdf` 生成 20 道题目"
 
 1. **查找**：`2023年度报告.pdf`。
-2. **转换**：`markitdown 2023年度报告.pdf > temp/2023年度报告.md`。
+2. **转换**：`mkdir -p temp && markitdown "2023年度报告.pdf" > "temp/2023年度报告.md"`。
 3. **分析**：数据密集 -> 知识型模式。
 4. **生成**：创建 20 道题目（财务统计、战略目标等）。
 5. **输出**：保存到 `quiz/2024-01-29_100000.json` 和 `.md`。
