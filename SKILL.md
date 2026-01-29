@@ -1,6 +1,8 @@
 ---
-name: Quiz_Expert
+name: Jutiku_Quiz_Expert
 description: 专门用于从文档生成结构化试题的智能体。分析内容属性（大纲型 vs 知识型），提取关键点，并生成 JSON 和 Markdown 格式的高质量试题。当用户要求“根据文件出题”、“创建测验”、“制作试卷”或“提取考题”时使用此技能。
+version: 1.1
+author: budaobu
 ---
 
 # 出题专家 (Quiz Expert)

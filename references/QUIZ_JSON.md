@@ -47,7 +47,7 @@ version: 1.1
     - **2级（中等）**：概念应用，比较分析。
     - **3级（困难）**：复杂分析，综合推理，多步骤推理。
     - **分布比例**：建议保持 30% 简单、50% 中等、20% 困难。
-- **字段完整性**：每道题 **必须** 包含 `qid`, `type`, `question`, `options`, `correct_answer`, `explanation`, `point`, `lev`, `score` 等所有核心字段。
+- **字段完整性**：每道题 **必须** 包含 `qid`, `type`, `question`, `options`, `correct_answer`, `explanation`, `point`, `tags`, `lev`, `score` 等所有核心字段。
 
 
 
@@ -74,7 +74,7 @@ version: 1.1
 | `point` | Array | 非空 | 包含该题考察的核心知识点标签。 |
 | `tags` | Array | 可选 | 额外的分类标签（如：章节、易错题、重点）。 |
 | `question` | String | 必填 | 题目正文，支持 Markdown 格式。 |
-| `options` | Array | 视题型定义 | 判断题固定为 `["A. 正确", "B. 错误"]`；非选择题设为空数组 `[]`。 |
+| `options` | Array | 视题型定义 | 判断题固定为 `["A. 正确", "B. 错误"]`；非选择题或判断题设为空数组 `[]`。 |
 | `correct_answer`| Array | 字母/索引数组 | 仅包含选项字母，如 `["A"]`；填空/简答题则填入参考答案。 |
 | `explanation` | Object | 结构化对象 | 包含 `analysis` (整体思路) 与 `options_detail` (选项解析)。 |
 | `score` | Int | 正整数 | 建议分值，反映题目权重。 |
