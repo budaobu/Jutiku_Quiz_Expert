@@ -1,51 +1,66 @@
 # Jutiku Quiz Expert (AI 出题专家)
 
-基于 AI 的出题专家系统，可根据文档或主题生成高质量题目。该系统能够自动识别文档类型，并采用混合出题策略。
+**Jutiku Quiz Expert** 是一个强大的 AI 智能出题系统，专注于根据用户提供的文档（PDF, DOCX, PPTX）或指定主题，自动生成高质量、多模态的测试题目。
 
-## 功能特性
+它不仅支持文本分析，还具备先进的多模态能力，能够识别文档中的几何图形、统计图表，并将其无缝整合到题目生成过程中，支持图文混排和复杂的数学公式（LaTeX）。
 
-- **多模式生成**：
-  - **基于文档 (Document-Based)**：直接从提供的材料中提取题目（适用于内容详尽的文档）。
-  - **基于主题 (Topic-Based)**：根据大纲或知识点利用内部知识库生成题目（适用于仅提供框架的文档）。
-  - **混合模式 (Hybrid)**：根据内容分析结果，智能组合上述两种策略。
-- **格式支持**：
-  - **JSON**：标准化数据格式，便于系统集成 (`references/QUIZ_JSON_SPEC.md`)。
-  - **Markdown**：人类可读格式，支持 LaTeX 公式渲染 (`references/QUIZ_MARKDOWN_SPEC.md`)。
-- **自动化流程**：
-  - 通过 `markitdown` 自动将输入文件转换为 Markdown。
-  - 严格验证输出结构及嵌入流程中的约束条件。
+## 核心功能
 
-## 使用方法
+*   **多模态支持**：自动提取和分析文档中的图片资源（如几何题插图），并保留在题目中。
+*   **多种出题模式**：
+    *   **基于文档 (Document-Based)**：全篇扫描，基于已有材料出题。
+    *   **基于主题 (Topic-Based)**：根据关键词调用外部知识库扩展出题。
+    *   **混合模式 (Hybrid)**：智能组合文档内容与外部知识。
+    *   **多模态模式 (Multimodal)**：专门针对包含视觉信息的材料（如数学几何、生物解剖图）出题。
+*   **专业格式输出**：
+    *   支持标准的 **JSON** 格式，便于程序处理。
+    *   支持优化的 **Markdown** 格式，便于人类阅读和排版。
+*   **自动化流程**：自动处理文件解压、图片提取、内容清洗到题目生成的全流程。
 
-只需直接要求 AI 根据指定文件或主题生成题目即可。
+## 目录结构说明
 
-### 目录结构
+本系统在运行时区分 **技能定义** 与 **工作区数据** 两个逻辑空间：
 
-系统会自动在您的工作区管理以下目录：
+### 1. 技能库 (Skill Library)
+包含技能的核心定义与规范文档，通常由系统预置。
+*   `Jutiku_Quiz_Expert/SKILL.md`: 核心逻辑定义
+*   `Jutiku_Quiz_Expert/references/`: 输出协议规范 (`.md` & `.json` spec)
 
-- `./temp/`：存储转换过程中的中间文件（例如：PDF -> Markdown）。
-- `./quiz/`：存储最终生成的题库文件，文件名格式为精确到秒的时间戳 (`YYYY-MM-DD-HHMMSS.[json|md]`)。
+### 2. Agent 工作区 (Workspace)
+任务执行时的动态目录，包含所有输入输出数据：
 
-## 输出示例
+*   **`./temp/`** (临时区)
+    *   存放解压后的原始图片、中间态 Markdown、语义图谱 (`graph.json`)。
+    *   *注：任务失败时可安全清理。*
 
-### JSON 格式
-```json
-{
-  "qid": "cs_001",
-  "type": "单选题",
-  "lev": 2,
-  "point": ["计算机科学"],
-  "question": "...",
-  "options": ["A...", "B..."],
-  "correct_answer": ["B"],
-  "explanation": ["..."],
-  "score": 5
-}
-```
+*   **`./assets/`** (资源池)
+    *   存放所有提取并清洗后的媒体资源（图片）。
+    *   采用 **SHA256 内容寻址** 存储，文件名即哈希值，确保全局唯一且不重复。
 
-### Markdown 格式
-采用标准化排版，包含详细的选项解析和元数据表格。
+*   **`./quiz/`** (交付区)
+    *   存放最终生成的题库文件。
+    *   输出命名格式：`{YYYY-MM-DD_HHMMSS}.[json|md]`
 
-## 依赖项
 
-- **markitdown**：如果环境缺失，将尝试自动安装 (`https://github.com/davila7/claude-code-templates`)。
+## 输出规范
+
+本系统支持两种标准的输出格式，详细定义请参考 `references` 目录：
+
+1.  **JSON 数据协议**: [Quiz Data Schema Specification](./references/QUIZ_JSON_SPEC.md)
+    *   定义了题目的标准字段：`qid` (题目ID), `type` (题型), `lev` (难度), `point` (知识点), `question` (题干), `options` (选项), `correct_answer` (正确答案), `explanation` (解析) 等。
+    
+2.  **Markdown 排版规范**: [Quiz Markdown Specification](./references/QUIZ_MARKDOWN_SPEC.md)
+    *   定义了易读的题目展示格式，包含 LaTeX 公式渲染规范和图片引用标准。
+
+## 快速开始
+
+1.  准备您的源文档（DOCX, PDF, PPTX 等）或确定出题主题。
+2.  调用 AI 出题专家 (Jutiku_Quiz_Expert) Skill。
+3.  输入具体指令，例如：
+    *   “请根据这份 PDF 生成 10 道单选题，重点考察第三章内容。”
+    *   “生成一套关于‘勾股定理’的混合题型试卷，包含几何计算题。”
+4.  系统将自动提取内容、分析图片，并在 `./quiz/` 目录下生成包含时间戳的题库文件。
+
+## 许可证
+
+MIT License
